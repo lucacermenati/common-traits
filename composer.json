@@ -1,0 +1,31 @@
+{
+	"name": "lucacermenati/common-traits",
+	"description": "Reusable traits and interfaces for Laravel applications.",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Luca Cermenati"
+		}
+	],
+	"require": {
+		"php": "^8.2",
+		"illuminate/support": "^11.0 || ^12.0 || ^13.0",
+		"illuminate/database": "^11.0 || ^12.0",
+		"illuminate/http": "^11.0 || ^12.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"LucaCermenati\\CommonTraits\\": "src/"
+		}
+	},
+	"extra": {
+		"laravel": {
+			"providers": [
+				"LucaCermenati\\CommonTraits\\Providers\\CommonTraitsServiceProvider"
+			]
+		}
+	},
+	"minimum-stability": "stable",
+	"prefer-stable": true
+}
