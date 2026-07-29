@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LucaCermenati\CommonTraits\Traits;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 trait HasImages
@@ -13,7 +14,7 @@ trait HasImages
      * The new path (and optionally the original file name) is written in the model.
      */
     public function uploadFile(
-        UploadFile $file, 
+        UploadedFile $file, 
         string $directory,
         string $pathAttribute,
         ?string $nameAttribute = null,
