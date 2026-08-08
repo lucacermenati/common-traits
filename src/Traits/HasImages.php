@@ -35,12 +35,17 @@ trait HasImages
         $this->save();
     }
 
-    public function removeFile(string $pathAttribute, ?string $disk = 'public'): void {
+    public function removeFile(string $pathAttribute, ?string $nameAttribute = null, ?string $disk = 'public'): void {
         if ($this->$pathAttribute && Storage::disk($disk)->exists($this->$pathAttribute)) {
             Storage::disk($disk)->delete($this->$pathAttribute);
         }
         
         $this->$pathAttribute = null;
+        
+        if ($nameAttribute) {
+            $this->$nameAttribute = null;
+        }
+        
         $this->save();
     }
 }
