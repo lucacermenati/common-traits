@@ -7,5 +7,5 @@ use Illuminate\Http\Request;
 
 interface FilterInterface
 {
-    public function apply(Builder $query, Request $request);
+    public function apply(Builder $query, Request $request): Builder;
 }

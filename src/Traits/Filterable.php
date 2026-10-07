@@ -8,7 +8,8 @@ use LucaCermenati\CommonTraits\Contracts\FilterInterface;
 
 trait Filterable
 {
-    public function apply(Builder $query, FilterInterface $filter, Request $request)
+    /** Scope a query by delegating to the given filter for the given request. */
+    public function scopeFilter(Builder $query, FilterInterface $filter, Request $request): Builder
     {
         return $filter->apply($query, $request);
     }
