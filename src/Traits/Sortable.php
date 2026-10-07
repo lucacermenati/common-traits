@@ -3,12 +3,14 @@
 namespace LucaCermenati\CommonTraits\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use LucaCermenati\CommonTraits\Contracts\SorterInterface;
 
 trait Sortable
 {
-    public function scopeSortBy(Builder $query, string $sortKey, string $sortDirection, SorterInterface $sorter)
+    /** Scope a query by delegating to the given sorter for the given request. */
+    public function scopeSort(Builder $query, SorterInterface $sorter, Request $request): Builder
     {
-        return $sorter->sort($query, $sortKey, $sortDirection);
+        return $sorter->apply($query, $request);
     }
 }
