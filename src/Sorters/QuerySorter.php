@@ -40,7 +40,10 @@ abstract class QuerySorter implements SorterInterface
             }
         }
 
-        return $this->builder->orderBy($this->defaultColumn, $this->defaultDirection);
+        return $this->builder->orderBy(
+            $this->builder->qualifyColumn($this->defaultColumn),
+            $this->defaultDirection,
+        );
     }
 
     /**
