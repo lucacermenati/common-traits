@@ -1,6 +1,16 @@
 {
 	"name": "lucacermenati/common-traits",
 	"description": "Reusable traits and interfaces for Laravel applications.",
+	"keywords": [
+		"laravel",
+		"eloquent",
+		"traits",
+		"search",
+		"filter",
+		"sort",
+		"upload"
+	],
+	"homepage": "https://github.com/lucacermenati/common-traits",
 	"type": "library",
 	"license": "MIT",
 	"authors": [
