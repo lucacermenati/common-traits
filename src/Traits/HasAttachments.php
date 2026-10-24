@@ -7,7 +7,7 @@ namespace LucaCermenati\CommonTraits\Traits;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-trait HasImages
+trait HasAttachments
 {
     /**
      * Store the uploaded file for the given path attribute, deleting the file it replaces.
