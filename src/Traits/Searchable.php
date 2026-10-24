@@ -5,37 +5,34 @@ namespace LucaCermenati\CommonTraits\Traits;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Searchable
-{   
-    protected abstract function searchables(): array;
+{
+    abstract protected function searchables(): array;
 
     /** Scope a query to search for a term in the model's searchable attributes. */
-    public function scopeSearch(Builder $query, ?string $searchTerm = null, ?array $searchIn = [])
+    public function scopeSearch(Builder $query, ?string $searchTerm = null, array $searchIn = []): Builder
     {
         $searchIn = $searchIn ?: $this->searchables();
 
-        if (empty($searchIn)) {
-            return $query;
-        }
-        
-        if (empty($searchTerm)) {
+        if (empty($searchIn) || empty($searchTerm)) {
             return $query;
         }
 
-        return $query->where(function ($query) use ($searchIn, $searchTerm) {
+        $pattern = "%{$searchTerm}%";
+
+        return $query->where(function (Builder $query) use ($searchIn, $pattern) {
             foreach ($searchIn as $field) {
-                // Check if field is a relationship (contains a dot)
-                if (strpos($field, '.') !== false) {
+                // A dotted field is a relationship path ending in the column to search
+                if (str_contains($field, '.')) {
                     $parts = explode('.', $field);
-                    $field = array_pop($parts); // Get the last element (the actual field to search)
-                    $relationPath = implode('.', $parts); // Recreate the dot notation path for nested relationships
+                    $column = array_pop($parts);
+                    $relationPath = implode('.', $parts);
 
-                    // Use whereHas with dot notation for nested relationships
-                    $query->orWhereHas($relationPath, function ($nestedQuery) use ($field, $searchTerm) {
-                        $nestedQuery->where($field, 'like', "%{$searchTerm}%");
+                    $query->orWhereHas($relationPath, function (Builder $nestedQuery) use ($column, $pattern) {
+                        $nestedQuery->whereLike($column, $pattern, caseSensitive: false);
                     });
                 } else {
-                    // Regular field search appends table name to avoid conflicts with other tables
-                    $query->orWhere($query->getModel()->getTable() . '.' . $field, 'like', "%{$searchTerm}%");
+                    // Qualify the column with the table name to avoid conflicts with joined tables
+                    $query->orWhereLike($query->qualifyColumn($field), $pattern, caseSensitive: false);
                 }
             }
         });
