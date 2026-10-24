@@ -11,9 +11,10 @@ use LucaCermenati\CommonTraits\Contracts\SorterInterface;
  * Base sorter that maps the sort request input to a sort method by name.
  *
  * The value of the sort input is converted to camelCase and, if the concrete
- * sorter declares a method with that name, the method is called. For example
- * `?sort=last_name` calls `lastName()`. The default order is always appended
- * last as a tiebreaker.
+ * sorter declares a method with that name, the method is called with the sort
+ * direction. A leading minus flips the direction to descending. For example
+ * `?sort=last_name` calls `lastName('asc')` and `?sort=-last_name` calls
+ * `lastName('desc')`. The default order is always appended last as a tiebreaker.
  */
 abstract class QuerySorter implements SorterInterface
 {
@@ -30,10 +31,12 @@ abstract class QuerySorter implements SorterInterface
         $this->builder = $query;
 
         if ($request->filled($this->sortInput)) {
-            $method = Str::camel((string) $request->input($this->sortInput));
+            $raw = trim((string) $request->input($this->sortInput));
+            $direction = str_starts_with($raw, '-') ? 'desc' : 'asc';
+            $method = Str::camel(ltrim($raw, '-'));
 
             if (in_array($method, $this->sortMethods(), true)) {
-                $this->{$method}();
+                $this->{$method}($direction);
             }
         }
 
