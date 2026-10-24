@@ -19,13 +19,6 @@
 			"LucaCermenati\\CommonTraits\\": "src/"
 		}
 	},
-	"extra": {
-		"laravel": {
-			"providers": [
-				"LucaCermenati\\CommonTraits\\Providers\\CommonTraitsServiceProvider"
-			]
-		}
-	},
 	"minimum-stability": "stable",
 	"prefer-stable": true
 }
